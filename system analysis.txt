@@ -1,0 +1,293 @@
+A Hotel Management System for Automated Reservation and Guest Services
+
+SYSTEM ANALYSIS
+
+1. Introduction
+
+The Hotel Management System for Automated Reservation and Guest Services is a web-based application developed to automate hotel operations such as room management, reservation handling, and guest services. The system replaces traditional manual processes with a digital solution that ensures efficiency, accuracy, security, and better customer experience.
+
+This project is designed using modern web technologies:
+
+Frontend: React
+
+Backend: Node.js with Express
+
+Database: MongoDB
+
+The system supports role-based access for Admin and Customer, ensuring secure and controlled operations.
+
+2. Problem Definition
+
+In many hotels, room reservations and guest records are still managed manually or using semi-automated tools like spreadsheets. This approach leads to several operational challenges such as booking conflicts, data inconsistency, delayed services, and poor customer satisfaction.
+
+The absence of a centralized and automated system makes it difficult to manage room availability, track bookings, and maintain accurate records.
+
+3. Existing System Analysis
+3.1 Description of Existing System
+
+The existing system is mostly manual and involves:
+
+Phone or walk-in reservations
+
+Paper-based record keeping
+
+Manual payment tracking
+
+No centralized database
+
+Limited security
+
+3.2 Limitations of Existing System
+
+High probability of human errors
+
+No real-time room availability
+
+Difficult to manage large data
+
+Poor data security
+
+Time-consuming operations
+
+No role-based access
+
+Difficult to generate reports
+
+4. Proposed System Overview
+
+The proposed system is a fully automated Hotel Management System that digitally manages all hotel operations. It allows users to register, login, browse rooms, make reservations, and complete payments, while administrators manage rooms and monitor bookings.
+
+The system ensures real-time data updates, secure authentication, and centralized data storage.
+
+5. Objectives of the System
+
+To automate hotel room reservations
+
+To provide real-time room availability
+
+To reduce manual work and human errors
+
+To ensure secure user authentication
+
+To manage booking and payment details efficiently
+
+To improve customer experience
+
+To provide role-based system access
+
+To maintain centralized and reliable data storage
+
+6. Scope of the System
+
+The scope of the system includes:
+
+User registration and authentication
+
+Role-based access (Admin and Customer)
+
+Room management
+
+Booking management
+
+Payment data storage within bookings
+
+Booking history and monitoring
+
+Future enhancements may include:
+
+Online payment gateway integration
+
+Invoice generation
+
+Email/SMS notifications
+
+Cancellation and refund management
+
+Admin analytics dashboard
+
+7. Advantages of the Proposed System
+7.1 Automation
+
+The system automates the entire booking and reservation process, reducing dependency on manual work.
+
+7.2 Centralized Database
+
+All data is stored in a centralized MongoDB database using three collections: Users, Rooms, and Bookings.
+
+7.3 Real-Time Availability
+
+Room availability is updated instantly, preventing double bookings.
+
+7.4 Role-Based Access Control
+
+Admins and customers have separate permissions, ensuring secure system operations.
+
+7.5 Embedded Payment Information
+
+Payment details are stored directly in the booking record, improving performance and reducing complexity.
+
+7.6 Improved Accuracy
+
+System validation and automation minimize errors and ensure data consistency.
+
+7.7 Time Efficiency
+
+Operations such as booking, confirmation, and monitoring are faster and more efficient.
+
+7.8 User-Friendly Interface
+
+React-based UI provides smooth navigation and better user experience.
+
+7.9 Scalability
+
+The system architecture allows future expansion and feature enhancement.
+
+7.10 Cost Effectiveness
+
+The use of open-source technologies makes the system economical.
+
+8. System Users
+8.1 Admin
+
+Login securely
+
+Add, update, and delete rooms
+
+View all users
+
+Monitor all bookings and payments
+
+Manage room availability
+
+8.2 Customer
+
+Register and login
+
+View available rooms
+
+Book rooms
+
+Make payments
+
+View booking history
+
+9. Functional Requirements
+9.1 User Authentication
+
+User registration
+
+Secure login
+
+JWT-based authentication
+
+Secure logout
+
+9.2 Room Management
+
+Add new rooms
+
+Update room details
+
+Delete rooms
+
+View room list
+
+9.3 Booking Management
+
+Select room and dates
+
+Store booking details
+
+Update room availability
+
+Store payment information
+
+9.4 Payment Handling
+
+Store payment amount
+
+Store payment status
+
+Store payment method
+
+Link payment with booking
+
+10. Non-Functional Requirements
+
+Security: Token-based authentication
+
+Performance: Fast response time
+
+Reliability: Accurate data storage
+
+Usability: Easy-to-use interface
+
+Scalability: Supports future growth
+
+Availability: 24×7 access
+
+11. Database Design
+11.1 Users Collection
+
+Stores user and admin details such as name, email, password, and role.
+
+11.2 Rooms Collection
+
+Stores room details including room type, price, and availability status.
+
+11.3 Bookings Collection
+
+Stores booking information along with embedded payment details.
+
+This design simplifies data access and improves performance.
+
+12. System Architecture
+
+The system follows a client-server architecture:
+
+Client Side: React frontend
+
+Server Side: Node.js with Express
+
+Database: MongoDB
+
+Security: Middleware-based authentication and authorization
+
+13. Overall System Flow
+
+User registers and logs into the system
+
+System verifies user role
+
+Admin manages room data
+
+Customer views available rooms
+
+Customer selects room and booking dates
+
+Booking details are stored
+
+Payment details are saved within booking
+
+Room availability is updated
+
+Admin monitors bookings
+
+User logs out securely
+
+14. Feasibility Study
+14.1 Technical Feasibility
+
+The system uses stable and modern technologies.
+
+14.2 Economic Feasibility
+
+Open-source tools reduce development and maintenance cost.
+
+14.3 Operational Feasibility
+
+The system is easy to operate and maintain.
+
+15. Conclusion
+
+The Hotel Management System for Automated Reservation and Guest Services provides an efficient, secure, and reliable solution for hotel operations. By automating reservation and guest services, the system improves accuracy, reduces workload, and enhances customer satisfaction. The project is scalable, cost-effective, and suitable for both academic and real-world implementation.
