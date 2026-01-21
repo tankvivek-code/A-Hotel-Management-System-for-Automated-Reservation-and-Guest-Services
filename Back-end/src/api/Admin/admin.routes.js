@@ -65,7 +65,7 @@ router.post(
   auth,
   role("admin"),
   upload.single("image"), // ✅ REQUIRED
-  createRoom
+  createRoom,
 );
 
 /* 🔹 GET ROOMS */
@@ -77,7 +77,7 @@ router.put(
   auth,
   role("admin"),
   upload.single("image"), // ✅ REQUIRED
-  updateRoom
+  updateRoom,
 );
 
 /* 🔹 DELETE ROOM */

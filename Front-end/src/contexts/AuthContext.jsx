@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
       setUser(res.data.user);
       return res.data;
     } catch (err) {
-      throw err; // 🔥 REQUIRED
+      throw err;
     }
   };
 
