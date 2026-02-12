@@ -2,17 +2,25 @@ import express from "express";
 import auth from "../middlewares/auth.middleware.js";
 import Room from "../User/room.model.js";
 import Booking from "./booking.model.js";
+import User from "../User/user.model.js";
 
 const router = express.Router();
 
 /* =========================================================
-   🏨 BOOK ROOM (USER + ADMIN)
+   🏨 BOOK ROOM (USER + MANAGER)
 ========================================================= */
 router.post("/book-room", auth, async (req, res) => {
   try {
+    // ❌ ADMIN CANNOT BOOK
+    if (req.user.role === "admin") {
+      return res
+        .status(403)
+        .json({ message: "Admin is not allowed to book rooms" });
+    }
+
     const {
       roomId,
-      userId,
+      userId, // only manager sends this
       name,
       email,
       phone,
@@ -39,8 +47,25 @@ router.post("/book-room", auth, async (req, res) => {
         .json({ message: "Check-out must be after check-in" });
     }
 
-    const finalUserId =
-      req.user.role === "admin" && userId ? userId : req.user.id;
+    // ✅ FINAL USER ID LOGIC
+    let finalUserId;
+
+    if (req.user.role === "user") {
+      finalUserId = req.user.id;
+    } else if (req.user.role === "manager") {
+      if (!userId) {
+        return res
+          .status(400)
+          .json({ message: "User is required for manager booking" });
+      }
+
+      const user = await User.findById(userId);
+      if (!user || user.role !== "user") {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      finalUserId = userId;
+    }
 
     const booking = await Booking.create({
       roomId,
@@ -51,11 +76,11 @@ router.post("/book-room", auth, async (req, res) => {
       checkIn: checkInDate,
       checkOut: checkOutDate,
       amount,
-      paymentMethod,
-      paymentDetails: paymentDetails || {}, // ✅ FIX
-      paymentStatus: "Paid",
+      paymentMethod: paymentMethod || "Cash",
+      paymentDetails: paymentDetails || {},
+      paymentStatus: req.user.role === "manager" ? "Paid" : "Pending",
       status: "Confirmed",
-      bookedBy: req.user.role,
+      bookedBy: req.user.role, // user | manager
     });
 
     room.status = "Booked";
@@ -76,9 +101,11 @@ router.post("/book-room", auth, async (req, res) => {
 ========================================================= */
 router.get("/my-bookings", auth, async (req, res) => {
   try {
-    const userId = req.user.id || req.user._id;
+    if (req.user.role !== "user") {
+      return res.status(403).json({ message: "Access denied" });
+    }
 
-    const bookings = await Booking.find({ userId })
+    const bookings = await Booking.find({ userId: req.user.id })
       .populate("roomId", "type price image")
       .sort({ createdAt: -1 });
 
@@ -89,18 +116,15 @@ router.get("/my-bookings", auth, async (req, res) => {
 });
 
 /* =========================================================
-   📘 ALL BOOKINGS (ADMIN)
+   📘 ALL BOOKINGS (ADMIN + MANAGER)
 ========================================================= */
 router.get("/bookings", auth, async (req, res) => {
   try {
-    let filter = {};
-
-    // users can only see their bookings
-    if (req.user.role === "user") {
-      filter = { userId: req.user.id };
+    if (!["admin", "manager"].includes(req.user.role)) {
+      return res.status(403).json({ message: "Access denied" });
     }
 
-    const bookings = await Booking.find(filter)
+    const bookings = await Booking.find()
       .populate("roomId", "type price")
       .populate("userId", "name email")
       .sort({ createdAt: -1 });
@@ -112,13 +136,15 @@ router.get("/bookings", auth, async (req, res) => {
 });
 
 /* =========================================================
-   🚪 CHECKOUT ROOM (ADMIN)
+   🚪 CHECKOUT ROOM (ADMIN + MANAGER)
 ========================================================= */
 router.put("/checkout/:bookingId", auth, async (req, res) => {
   try {
-    const { bookingId } = req.params;
+    if (!["admin", "manager"].includes(req.user.role)) {
+      return res.status(403).json({ message: "Access denied" });
+    }
 
-    const booking = await Booking.findById(bookingId);
+    const booking = await Booking.findById(req.params.bookingId);
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }

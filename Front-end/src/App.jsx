@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
@@ -11,6 +11,15 @@ import Footer from "./Component/common/Footer";
 /* ===== ADMIN PAGES ===== */
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import ManageRooms from "./Pages/Admin/ManageRooms";
+import ManageUsers from "./Pages/Admin/ManageUsers";
+import AdminBookings from "./Pages/Admin/AdminBookings";
+
+/* ===== MANAGER PAGES ===== */
+import ManagerLayout from "./Pages/Manager/ManagerLayout";
+import ManagerDashboard from "./Pages/Manager/ManagerDashboard";
+import ManagerCheckIns from "./Pages/Manager/ManagerCheckIns";
+import ManagerCheckOuts from "./Pages/Manager/ManagerCheckOuts";
+import ManagerRooms from "./Pages/Manager/ManagerRooms";
 
 /* ===== CUSTOMER PAGES ===== */
 import Home from "./Pages/Customer/Home";
@@ -22,12 +31,12 @@ import Payments from "./Pages/Customer/Payments";
 import Services from "./Pages/Services";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
-import ManageUsers from "./Pages/Admin/ManageUsers";
-import AdminBookings from "./Pages/Admin/AdminBookings";
-import AdminBookRoom from "./Pages/Admin/AdminBookRoom";
+import ManagerUsers from "./Pages/Manager/ManagerUsers";
+import ManagerBookings from "./Pages/Manager/ManagerBookings";
 
 const App = () => (
   <>
+    {/* 🔝 COMMON HEADER */}
     <Navbar />
 
     <Routes>
@@ -104,16 +113,28 @@ const App = () => (
         }
       />
 
+      {/* ================= MANAGER ROUTES ================= */}
       <Route
-        path="/admin/book-room/:userId"
+        path="/manager"
         element={
-          <ProtectedRoute role="admin">
-            <AdminBookRoom />
+          <ProtectedRoute role={["manager", "admin"]}>
+            <ManagerLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        {/* ✅ DEFAULT PAGE */}
+        <Route index element={<ManagerDashboard />} />
+
+        <Route path="dashboard" element={<ManagerDashboard />} />
+        <Route path="checkins" element={<ManagerCheckIns />} />
+        <Route path="checkouts" element={<ManagerCheckOuts />} />
+        <Route path="rooms" element={<ManagerRooms />} />
+        <Route path="users" element={<ManagerUsers />} />
+        <Route path="bookings" element={<ManagerBookings />} />
+      </Route>
     </Routes>
 
+    {/* 🔻 COMMON FOOTER */}
     <Footer />
   </>
 );

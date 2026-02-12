@@ -79,7 +79,7 @@ const Payments = () => {
                     <div className="flex flex-col gap-2 items-start md:items-end">
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-medium ${badgeStyle(
-                          p.paymentStatus
+                          p.paymentStatus,
                         )}`}
                       >
                         Payment: {p.paymentStatus}

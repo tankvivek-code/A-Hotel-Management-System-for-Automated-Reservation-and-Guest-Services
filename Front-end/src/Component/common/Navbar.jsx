@@ -8,12 +8,14 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
-  // 🔑 HOME PATH BASED ON ROLE
+  /* 🔑 HOME PATH BASED ON ROLE */
   const homePath = !user
     ? "/"
     : user.role === "admin"
-    ? "/admin"
-    : "/CustomerPage";
+      ? "/admin"
+      : user.role === "manager"
+        ? "/manager/dashboard"
+        : "/customerPage"; // ✅ fixed case
 
   const handleLogout = () => {
     logout();
@@ -21,70 +23,62 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const closeMenu = () => setOpen(false);
+
   return (
-    <nav className="bg-white text-slate-800 sticky top-0 z-50 border-b">
+    <nav className="bg-white border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
         {/* LOGO */}
-        <Link to={homePath} className="text-2xl font-bold text-slate-900">
+        <Link to={homePath} className="text-2xl font-bold">
           MyApp
         </Link>
 
         {/* ================= DESKTOP MENU ================= */}
         <div className="hidden md:flex items-center gap-6">
-          {/* 🔓 PUBLIC / CUSTOMER LINKS */}
-          {user?.role !== "admin" && (
+          {/* 👤 USER */}
+          {user?.role === "user" && (
             <>
-              <Link to={homePath} className="hover:text-slate-600">
-                Home
-              </Link>
-              <Link to="/services" className="hover:text-slate-600">
-                Services
-              </Link>
-              <Link to="/about" className="hover:text-slate-600">
-                About
-              </Link>
-              <Link to="/contact" className="hover:text-slate-600">
-                Contact
-              </Link>
+              <Link to="/customerPage">Home</Link>
+              <Link to="/my-bookings">My Bookings</Link>
             </>
           )}
 
-          {/* 🛠 ADMIN ONLY */}
-          {user?.role === "admin" && (
-            <Link to="/admin" className="font-semibold hover:text-slate-600">
-              Admin Panel
-            </Link>
+          {/* 🧑‍💼 MANAGER */}
+          {user?.role === "manager" && (
+            <>
+              <Link to="/manager/dashboard">Dashboard</Link>
+              <Link to="/manager/rooms">Rooms</Link>
+              <Link to="/manager/users">Users</Link>
+              <Link to="/manager/bookings">Bookings</Link>
+            </>
           )}
 
-          {/* BEFORE LOGIN */}
+          {/* 👑 ADMIN */}
+          {user?.role === "admin" && (
+            <>
+              <Link to="/admin">Dashboard</Link>
+              <Link to="/admin/users">Users</Link>
+              <Link to="/admin/rooms">Rooms</Link>
+              <Link to="/admin/bookings">Bookings</Link>
+            </>
+          )}
+
+          {/* 🔓 PUBLIC */}
           {!user && (
             <>
-              <Link
-                to="/login"
-                className="px-4 py-1 border border-slate-400 rounded hover:bg-slate-100"
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="px-4 py-1 bg-slate-800 text-white rounded hover:bg-slate-900"
-              >
-                Register
-              </Link>
+              <Link to="/services">Services</Link>
+              <Link to="/about">About</Link>
+              <Link to="/contact">Contact</Link>
+              <Link to="/login">Login</Link>
+              <Link to="/register">Register</Link>
             </>
           )}
 
-          {/* AFTER LOGIN */}
-          {user && (
-            <PrimaryButton
-              className="cursor-pointer"
-              text="Logout"
-              onClick={handleLogout}
-            />
-          )}
+          {/* LOGOUT */}
+          {user && <PrimaryButton text="Logout" onClick={handleLogout} />}
         </div>
 
-        {/* ================= MOBILE BUTTON ================= */}
+        {/* MOBILE BUTTON */}
         <button className="md:hidden text-3xl" onClick={() => setOpen(!open)}>
           ☰
         </button>
@@ -92,76 +86,67 @@ const Navbar = () => {
 
       {/* ================= MOBILE MENU ================= */}
       {open && (
-        <div className="md:hidden bg-slate-50 border-t px-6 py-4 space-y-4">
-          {/* 🔓 PUBLIC / CUSTOMER LINKS */}
-          {user?.role !== "admin" && (
+        <div className="md:hidden bg-slate-50 px-6 py-4 space-y-3">
+          {user?.role === "user" && (
             <>
-              <Link
-                onClick={() => setOpen(false)}
-                to={homePath}
-                className="block"
-              >
+              <Link to="/customerPage" onClick={closeMenu}>
                 Home
               </Link>
-              <Link
-                onClick={() => setOpen(false)}
-                to="/services"
-                className="block"
-              >
-                Services
-              </Link>
-              <Link
-                onClick={() => setOpen(false)}
-                to="/about"
-                className="block"
-              >
-                About
-              </Link>
-              <Link
-                onClick={() => setOpen(false)}
-                to="/contact"
-                className="block"
-              >
-                Contact
+              <Link to="/my-bookings" onClick={closeMenu}>
+                My Bookings
               </Link>
             </>
           )}
 
-          {/* 🛠 ADMIN ONLY */}
-          {user?.role === "admin" && (
-            <Link
-              onClick={() => setOpen(false)}
-              to="/admin"
-              className="block font-semibold"
-            >
-              Admin Panel
-            </Link>
+          {user?.role === "manager" && (
+            <>
+              <Link to="/manager/dashboard" onClick={closeMenu}>
+                Dashboard
+              </Link>
+              <Link to="/manager/rooms" onClick={closeMenu}>
+                Rooms
+              </Link>
+              <Link to="/manager/users" onClick={closeMenu}>
+                Users
+              </Link>
+              <Link to="/manager/bookings" onClick={closeMenu}>
+                Bookings
+              </Link>
+              <Link to="/manager/payments" onClick={closeMenu}>
+                Payments
+              </Link>
+            </>
           )}
 
-          {!user ? (
+          {user?.role === "admin" && (
             <>
-              <Link
-                onClick={() => setOpen(false)}
-                to="/login"
-                className="block"
-              >
+              <Link to="/admin" onClick={closeMenu}>
+                Dashboard
+              </Link>
+              <Link to="/admin/users" onClick={closeMenu}>
+                Users
+              </Link>
+              <Link to="/admin/rooms" onClick={closeMenu}>
+                Rooms
+              </Link>
+              <Link to="/admin/bookings" onClick={closeMenu}>
+                Bookings
+              </Link>
+            </>
+          )}
+
+          {!user && (
+            <>
+              <Link to="/login" onClick={closeMenu}>
                 Login
               </Link>
-              <Link
-                onClick={() => setOpen(false)}
-                to="/register"
-                className="block font-semibold"
-              >
+              <Link to="/register" onClick={closeMenu}>
                 Register
               </Link>
             </>
-          ) : (
-            <PrimaryButton
-              className="cursor-pointer"
-              text="Logout"
-              onClick={handleLogout}
-            />
           )}
+
+          {user && <PrimaryButton text="Logout" onClick={handleLogout} />}
         </div>
       )}
     </nav>

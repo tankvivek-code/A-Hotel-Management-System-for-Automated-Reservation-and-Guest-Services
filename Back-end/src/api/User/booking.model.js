@@ -52,7 +52,7 @@ const bookingSchema = new mongoose.Schema(
     /* ================= BOOKING INFO ================= */
     bookedBy: {
       type: String,
-      enum: ["admin", "user"],
+      enum: ["admin", "user", "manager"],
     },
 
     name: String,
@@ -80,7 +80,7 @@ const bookingSchema = new mongoose.Schema(
       default: "Confirmed",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Booking", bookingSchema);

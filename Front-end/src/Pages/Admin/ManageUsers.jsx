@@ -116,6 +116,7 @@ const ManageUsers = () => {
           >
             <option value="user">User</option>
             <option value="admin">Admin</option>
+            <option value="manager">Manager</option>
           </select>
         </div>
 
@@ -173,13 +174,6 @@ const ManageUsers = () => {
                           role: u.role,
                         });
                       }}
-                    />
-
-                    {/* 🔥 NEW: ADMIN BOOK ROOM FOR USER */}
-                    <PrimaryButton
-                      className="bg-blue-600"
-                      text="Book Room"
-                      onClick={() => navigate(`/admin/book-room/${u._id}`)}
                     />
 
                     <PrimaryButton

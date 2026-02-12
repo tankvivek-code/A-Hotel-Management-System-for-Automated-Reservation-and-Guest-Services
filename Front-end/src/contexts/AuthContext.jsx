@@ -7,7 +7,7 @@ const API = "http://localhost:5000/api";
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || null
+    JSON.parse(localStorage.getItem("user")) || null,
   );
 
   // REGISTER
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
             headers: {
               Authorization: `Bearer ${token}`, // 🔥 REQUIRED
             },
-          }
+          },
         );
       }
     } catch (err) {

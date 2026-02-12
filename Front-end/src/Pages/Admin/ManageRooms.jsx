@@ -182,7 +182,8 @@ const ManageRooms = () => {
                 <td className="p-3">{r.roomNumber}</td>
                 <td className="p-3">{r.type}</td>
                 <td className="p-3">₹{r.price}</td>
-                <td className="p-3">{r.status}</td>
+                <td className="p-3 font-medium">{r.status}</td>{" "}
+                {/* READ ONLY */}
                 <td className="p-3">
                   {r.image && (
                     <img
@@ -194,6 +195,7 @@ const ManageRooms = () => {
                 <td className="p-3 flex gap-2">
                   <PrimaryButton
                     text="Edit"
+                    disabled={r.status === "Booked"}
                     onClick={() => {
                       setEditingRoom(r);
                       setForm(r);
@@ -202,6 +204,7 @@ const ManageRooms = () => {
                   <PrimaryButton
                     className="bg-red-600"
                     text="Delete"
+                    disabled={r.status === "Booked"}
                     onClick={() => deleteRoom(r._id)}
                   />
                 </td>

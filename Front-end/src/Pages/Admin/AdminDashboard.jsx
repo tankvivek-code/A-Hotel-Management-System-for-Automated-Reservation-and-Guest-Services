@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import PrimaryButton from "../../Component/PrimaryButton";
 import AdminQuickActionCards from "../../Component/common/adminQuickActionCards";
 
 const API = "http://localhost:5000/api/admin/dashboard";
@@ -20,17 +19,35 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
   const token = localStorage.getItem("accessToken");
 
   /* ================= FETCH DASHBOARD STATS ================= */
   useEffect(() => {
-    axios
-      .get(API, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => setStats(res.data))
-      .catch((err) => console.error("Dashboard error:", err));
-  }, []);
+    const fetchDashboard = async () => {
+      try {
+        setLoading(true);
+
+        const res = await axios.get(API, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setStats(res.data);
+        setError(false);
+      } catch (err) {
+        console.error("Dashboard error:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (token) fetchDashboard();
+  }, [token]);
 
   /* ================= LOGOUT ================= */
   const handleLogout = async () => {
@@ -38,10 +55,19 @@ const AdminDashboard = () => {
     navigate("/login");
   };
 
-  if (!stats) {
+  /* ================= STATES ================= */
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-slate-600">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  if (error || !stats) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-red-600">Failed to load dashboard</p>
       </div>
     );
   }
@@ -57,15 +83,15 @@ const AdminDashboard = () => {
       <div className="bg-white rounded-lg shadow p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <p className="text-sm text-slate-500">Name</p>
-          <p className="font-semibold">{user?.name}</p>
+          <p className="font-semibold">{user?.name || "-"}</p>
         </div>
         <div>
           <p className="text-sm text-slate-500">Email</p>
-          <p className="font-semibold">{user?.email}</p>
+          <p className="font-semibold">{user?.email || "-"}</p>
         </div>
         <div>
           <p className="text-sm text-slate-500">Role</p>
-          <p className="font-semibold capitalize">{user?.role}</p>
+          <p className="font-semibold capitalize">{user?.role || "-"}</p>
         </div>
       </div>
 
@@ -86,10 +112,7 @@ const AdminDashboard = () => {
           <StatCard title="Total Bookings" value={stats.totalBookings} />
           <StatCard title="Active Bookings" value={stats.activeBookings} />
 
-          <StatCard
-            title="Total Revenue (Mock)"
-            value={`₹${stats.totalRevenue}`}
-          />
+          <StatCard title="Total Revenue" value={`₹${stats.totalRevenue}`} />
 
           <StatCard title="Today Check-Ins" value={stats.todayCheckIns} />
           <StatCard title="Today Check-Outs" value={stats.todayCheckOuts} />
