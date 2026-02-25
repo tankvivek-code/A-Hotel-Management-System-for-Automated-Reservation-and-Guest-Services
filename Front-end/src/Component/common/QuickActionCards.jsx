@@ -4,14 +4,8 @@ const QuickActionCards = () => {
   const navigate = useNavigate();
 
   const actions = [
-    {
-      title: "My Bookings",
-      path: "/my-bookings",
-    },
-    {
-      title: "Payment Summary",
-      path: "/payments",
-    },
+    { title: "My Bookings", path: "/my-bookings" },
+    { title: "Payment Summary", path: "/payments" },
   ];
 
   return (
@@ -20,11 +14,24 @@ const QuickActionCards = () => {
         <div
           key={index}
           onClick={() => navigate(item.path)}
-          className="bg-white rounded-xl shadow cursor-pointer
-                     flex items-center justify-center
-                     h-24 text-lg font-semibold text-slate-800
-                     hover:shadow-lg hover:scale-[1.02]
-                     transition"
+          className="
+            bg-white
+            border border-gray-200
+            rounded-2xl
+            shadow-sm
+            cursor-pointer
+            flex items-center justify-center
+            h-28
+            text-lg md:text-xl
+            font-semibold
+            text-slate-800
+            hover:shadow-xl
+            hover:-translate-y-1
+            hover:bg-gradient-to-r
+            hover:from-blue-50
+            hover:to-indigo-50
+            transition-all duration-300
+          "
         >
           {item.title}
         </div>

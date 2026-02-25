@@ -23,33 +23,33 @@ const Payments = () => {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen px-4 py-8">
-      <div className="max-w-5xl mx-auto space-y-8">
+    <div className="bg-slate-50 min-h-screen px-4 py-10">
+      <div className="max-w-5xl mx-auto space-y-10">
         {/* HEADER */}
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h1 className="text-2xl font-bold">My Payments</h1>
-          <p className="text-slate-600 text-sm mt-1">
-            View all payment and booking details
+        <div className="bg-white p-6 rounded-2xl shadow-sm border">
+          <h1 className="text-3xl font-bold text-slate-900">My Payments</h1>
+          <p className="text-slate-500 text-sm mt-1">
+            View all your payment and booking details
           </p>
         </div>
 
         <QuickActionCards />
 
-        {/* PAYMENTS */}
-        <section className="bg-white p-6 rounded-lg shadow">
+        {/* PAYMENTS LIST */}
+        <section className="bg-white p-6 rounded-2xl shadow-sm border">
           {payments.length === 0 ? (
-            <p className="text-center text-slate-500">No payments found</p>
+            <p className="text-center text-slate-500 py-6">No payments found</p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {payments.map((p) => (
                 <div
                   key={p._id}
-                  className="border rounded-lg p-4 hover:shadow-md transition"
+                  className="border border-gray-200 rounded-2xl p-5 hover:shadow-lg transition"
                 >
-                  <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-                    {/* LEFT INFO */}
-                    <div>
-                      <p className="font-semibold text-lg">
+                  <div className="flex flex-col md:flex-row md:justify-between gap-6">
+                    {/* LEFT */}
+                    <div className="space-y-2">
+                      <p className="font-semibold text-xl">
                         {p.roomId?.type} Room
                       </p>
 
@@ -67,26 +67,27 @@ const Payments = () => {
                         <b>{new Date(p.createdAt).toLocaleString()}</b>
                       </p>
 
-                      <p className="text-sm text-slate-600 mt-1">
+                      <p className="text-sm">
                         Payment Method: <b>{p.paymentMethod}</b>
                       </p>
-                      <p className="text-sm font-medium mt-2">
-                        Amount Paid: <b>₹{p.amount}</b>
+
+                      <p className="text-base font-semibold mt-2">
+                        Amount: ₹{p.amount}
                       </p>
                     </div>
 
-                    {/* RIGHT STATUS */}
-                    <div className="flex flex-col gap-2 items-start md:items-end">
+                    {/* RIGHT */}
+                    <div className="flex flex-col gap-3 md:items-end">
                       <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${badgeStyle(
+                        className={`px-4 py-1 rounded-full text-sm font-medium ${badgeStyle(
                           p.paymentStatus,
                         )}`}
                       >
-                        Payment: {p.paymentStatus}
+                        {p.paymentStatus}
                       </span>
 
-                      <span className="px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-700 font-medium">
-                        Booking: {p.status}
+                      <span className="px-4 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-700">
+                        {p.status}
                       </span>
                     </div>
                   </div>

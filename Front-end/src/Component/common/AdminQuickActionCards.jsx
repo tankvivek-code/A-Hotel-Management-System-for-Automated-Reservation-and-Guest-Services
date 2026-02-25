@@ -11,29 +11,28 @@ const AdminQuickActionCards = () => {
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && onClick()}
       className="
-        bg-white shadow rounded-xl p-6 cursor-pointer
-        hover:shadow-lg hover:-translate-y-1
+        bg-white
+        border border-gray-200
+        shadow-sm
+        rounded-2xl
+        p-6
+        cursor-pointer
+        hover:shadow-xl
+        hover:-translate-y-1
         active:scale-95
-        transition-all duration-200
+        transition-all duration-300
         flex flex-col items-center text-center
-        min-h-[160px]
+        min-h-[180px]
       "
     >
-      <div className="text-3xl text-slate-700 mb-3">{icon}</div>
+      <div className="text-4xl text-blue-600 mb-4">{icon}</div>
       <h3 className="font-semibold text-lg text-slate-900">{title}</h3>
-      <p className="text-sm text-slate-500 mt-1">{desc}</p>
+      <p className="text-sm text-slate-500 mt-2">{desc}</p>
     </div>
   );
 
   return (
-    <div
-      className="
-        grid gap-6
-        grid-cols-1
-        sm:grid-cols-2
-        lg:grid-cols-3
-      "
-    >
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       <Card
         title="Manage Users"
         desc="Create, update and delete users"
@@ -54,9 +53,10 @@ const AdminQuickActionCards = () => {
         icon={<FaChartLine />}
         onClick={() => navigate("/admin/bookings")}
       />
+
       <Card
         title="System Overview"
-        desc="View bookings & revenue (mock)"
+        desc="View bookings & revenue"
         icon={<FaChartLine />}
         onClick={() => navigate("/admin")}
       />

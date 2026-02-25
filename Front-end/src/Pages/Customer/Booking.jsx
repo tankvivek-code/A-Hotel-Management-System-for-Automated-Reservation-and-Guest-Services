@@ -23,8 +23,8 @@ const Booking = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
-          responseType: "blob", // 🔥 IMPORTANT
-        }
+          responseType: "blob",
+        },
       );
 
       const file = new Blob([res.data], { type: "application/pdf" });
@@ -32,19 +32,13 @@ const Booking = () => {
       window.open(fileURL);
     } catch (err) {
       alert("Failed to load invoice");
-      console.error(err);
     }
   };
 
-  const getStatusStyle = (status) =>
-    status === "Confirmed"
-      ? "bg-green-100 text-green-700"
-      : "bg-slate-200 text-slate-700";
-
   return (
-    <div className="bg-slate-50 min-h-screen px-4 py-8">
-      <div className="max-w-5xl mx-auto space-y-8">
-        <div className="bg-white p-6 rounded-lg shadow">
+    <div className="bg-slate-50 min-h-screen px-4 py-10">
+      <div className="max-w-5xl mx-auto space-y-10">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border">
           <h1 className="text-2xl font-bold">My Bookings</h1>
           <p className="text-slate-600 text-sm mt-1">
             View your current and past bookings
@@ -53,64 +47,35 @@ const Booking = () => {
 
         <QuickActionCards />
 
-        <section className="bg-white p-6 rounded-lg shadow">
+        <section className="bg-white p-6 rounded-2xl shadow-sm border">
           {bookings.length === 0 ? (
-            <p className="text-center text-slate-500">No bookings found</p>
+            <p className="text-center text-slate-500 py-6">No bookings found</p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {bookings.map((b) => (
-                <div key={b._id} className="border p-4 rounded space-y-2">
-                  <p className="font-semibold">{b.roomId?.type}</p>
-
+                <div
+                  key={b._id}
+                  className="bg-white border border-gray-200 rounded-2xl p-5 hover:shadow-md transition space-y-3"
+                >
+                  <p className="font-semibold text-lg">{b.roomId?.type}</p>
+                
                   <p className="text-sm text-slate-600">
                     {new Date(b.checkIn).toLocaleString()} →{" "}
                     {new Date(b.checkOut).toLocaleString()}
                   </p>
 
-                  <p className="text-sm">Amount: ₹{b.amount}</p>
+                  <p className="text-sm font-medium">Amount: ₹{b.amount}</p>
 
-                  <p className="text-sm">
-                    <b>Payment Method:</b> {b.paymentMethod}
-                  </p>
-
-                  {/* PAYMENT DETAILS */}
-                  {b.paymentDetails && (
-                    <div className="text-xs text-slate-600">
-                      {b.paymentMethod === "UPI" && (
-                        <p>UPI ID: {b.paymentDetails.upiId}</p>
-                      )}
-
-                      {b.paymentMethod === "Card" && (
-                        <>
-                          <p>Card Holder: {b.paymentDetails.cardHolder}</p>
-                          <p>Card Last 4: **** {b.paymentDetails.cardLast4}</p>
-                        </>
-                      )}
-
-                      {b.paymentMethod === "NetBanking" && (
-                        <p>Bank: {b.paymentDetails.bankName}</p>
-                      )}
-                    </div>
-                  )}
-
-                  <p className="text-sm text-green-600 font-medium">
-                    Payment Status: {b.paymentStatus}
-                  </p>
-
-                  <p className="text-xs text-slate-500">
-                    Booked By: {b.bookedBy?.toUpperCase()}
-                  </p>
-
-                  <div className="flex justify-between items-center mt-2">
+                  <div className="flex justify-between items-center mt-4">
                     <button
                       onClick={() => viewInvoice(b._id)}
-                      className="px-3 py-1 rounded text-xs bg-blue-600 text-white"
+                      className="px-4 py-1.5 rounded-md text-xs bg-blue-600 hover:bg-blue-700 text-white transition"
                     >
                       Invoice
                     </button>
 
                     <span
-                      className={`px-3 py-1 rounded-full text-xs ${
+                      className={`px-4 py-1 rounded-full text-xs font-medium ${
                         b.status === "Confirmed"
                           ? "bg-green-100 text-green-700"
                           : "bg-slate-200 text-slate-700"

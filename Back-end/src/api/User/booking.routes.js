@@ -78,9 +78,9 @@ router.post("/book-room", auth, async (req, res) => {
       amount,
       paymentMethod: paymentMethod || "Cash",
       paymentDetails: paymentDetails || {},
-      paymentStatus: req.user.role === "manager" ? "Paid" : "Pending",
+      paymentStatus: req.body.paymentStatus || "Paid",
       status: "Confirmed",
-      bookedBy: req.user.role, // user | manager
+      bookedBy: req.user.role,
     });
 
     room.status = "Booked";

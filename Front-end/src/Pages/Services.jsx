@@ -27,54 +27,54 @@ const Services = () => {
   ];
 
   return (
-    <div className="bg-slate-50 min-h-screen px-4 py-10">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* ===== PAGE HEADER ===== */}
-        <div className="text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
-            Our Services
-          </h1>
-          <p className="text-slate-600 mt-3 max-w-2xl mx-auto">
-            Our Hotel Management System provides smart and automated services
-            designed to simplify hotel operations and improve customer
-            experience.
+    <div className="bg-slate-50 min-h-screen px-4 py-16">
+      <div className="max-w-7xl mx-auto space-y-16">
+        {/* HEADER */}
+        <div className="text-center max-w-3xl mx-auto">
+          <h1 className="text-4xl font-bold text-slate-900">Our Services</h1>
+          <p className="text-slate-600 mt-4">
+            Smart and automated services designed to simplify hotel operations
+            and improve customer experience.
           </p>
         </div>
 
-        {/* ===== SERVICES GRID ===== */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* SERVICES GRID */}
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition"
+              className="bg-white border rounded-2xl p-8 shadow-sm hover:shadow-xl transition"
             >
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">
                 {service.title}
               </h3>
-              <p className="text-slate-600 text-sm">{service.desc}</p>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                {service.desc}
+              </p>
             </div>
           ))}
         </div>
 
-        {/* ===== WHY OUR SERVICES ===== */}
-        <div className="bg-white p-8 rounded-lg shadow">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4 text-center">
+        {/* WHY SECTION */}
+        <div className="bg-white border rounded-2xl p-10 shadow-sm">
+          <h2 className="text-2xl font-bold text-center mb-8">
             Why Choose Our Services?
           </h2>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-center">
-            <div className="border rounded p-4">
-              <p className="font-semibold">Fast & Reliable</p>
-            </div>
-            <div className="border rounded p-4">
-              <p className="font-semibold">Paperless System</p>
-            </div>
-            <div className="border rounded p-4">
-              <p className="font-semibold">User-Friendly Interface</p>
-            </div>
-            <div className="border rounded p-4">
-              <p className="font-semibold">Scalable Architecture</p>
-            </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 text-center">
+            {[
+              "Fast & Reliable",
+              "Paperless System",
+              "User-Friendly Interface",
+              "Scalable Architecture",
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="p-6 border rounded-xl hover:bg-slate-50 transition"
+              >
+                <p className="font-semibold">{item}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

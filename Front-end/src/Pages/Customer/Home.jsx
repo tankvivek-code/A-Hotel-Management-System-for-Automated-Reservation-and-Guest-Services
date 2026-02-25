@@ -12,7 +12,7 @@ const Home = () => {
     <div className="bg-white text-slate-800">
       {/* ================= HERO SECTION ================= */}
       <section
-        className="min-h-[85vh] flex items-center justify-center text-center px-4"
+        className="relative min-h-[70vh] flex items-center justify-center px-4 py-16"
         style={{
           backgroundImage:
             "url('https://images.unsplash.com/photo-1566073771259-6a8506099945')",
@@ -20,42 +20,34 @@ const Home = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="bg-white/90 backdrop-blur-sm p-8 rounded-xl max-w-3xl shadow-lg">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/50"></div>
+
+        {/* Content Card */}
+        <div className="relative max-w-3xl w-full bg-white/95 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 md:p-10 text-center">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 leading-snug">
             Automated Hospitality Operations Made Easy
           </h1>
-          <p className="text-slate-600 mb-6">
+
+          <p className="mt-4 text-sm sm:text-base text-slate-600 max-w-xl mx-auto">
             Smart hotel management system to automate bookings, manage rooms,
-            staff, and billing — all from one platform.
+            staff and billing — all from one platform.
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
             <PrimaryButton
               text="View Rooms"
               navigate={targetPath}
-              className="px-6 py-3 bg-slate-800 text-white rounded hover:bg-slate-900 transition"
+              className="px-6 py-2.5 text-sm sm:text-base font-semibold"
             />
 
             <PrimaryButton
-              text="Book Now"
+              text="Learn More"
               navigate={targetPath}
-              className="px-6 py-3 border border-slate-800 rounded hover:bg-slate-100 transition"
+              className="!bg-black !text-white px-6 py-2.5 text-sm sm:text-base font-semibold"
             />
           </div>
         </div>
-      </section>
-
-      {/* ================= ABOUT SECTION ================= */}
-      <section className="py-16 px-6 max-w-6xl mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-4 text-slate-900">
-          About the System
-        </h2>
-        <p className="text-slate-600 max-w-3xl mx-auto">
-          Our Hotel Management System automates daily hotel operations such as
-          room booking, availability tracking, staff management, and billing.
-          The system is designed to improve efficiency, reduce paperwork, and
-          provide a smooth experience for both guests and administrators.
-        </p>
       </section>
 
       {/* ================= FEATURES SECTION ================= */}

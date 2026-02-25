@@ -34,7 +34,7 @@ export const login = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(400).json({ message: "Access denied" });
+      return res.status(400).json({ message: "No User Found" });
     }
 
     const match = await bcrypt.compare(req.body.password, user.password);
@@ -45,7 +45,7 @@ export const login = async (req, res) => {
     const accessToken = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: ACCESS_EXPIRE }
+      { expiresIn: ACCESS_EXPIRE },
     );
 
     const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -86,7 +86,7 @@ export const refreshToken = async (req, res) => {
     const accessToken = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: ACCESS_EXPIRE }
+      { expiresIn: ACCESS_EXPIRE },
     );
 
     res.json({ accessToken });

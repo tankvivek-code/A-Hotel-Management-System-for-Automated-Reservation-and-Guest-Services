@@ -50,6 +50,7 @@ const ManagerRooms = () => {
 
     try {
       setLoading(true);
+
       const formData = new FormData();
       formData.append("roomNumber", form.roomNumber);
       formData.append("type", form.type);
@@ -76,6 +77,7 @@ const ManagerRooms = () => {
 
     try {
       setLoading(true);
+
       const formData = new FormData();
       formData.append("roomNumber", form.roomNumber);
       formData.append("type", form.type);
@@ -127,16 +129,16 @@ const ManagerRooms = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-8">
-      <h1 className="text-2xl font-bold mb-6">Manage Rooms (Manager)</h1>
+    <div className="min-h-screen bg-slate-50 px-4 py-8 md:px-8 space-y-8">
+      <h1 className="text-2xl font-bold">Manage Rooms</h1>
 
-      {/* ================= FORM ================= */}
-      <div className="bg-white p-6 rounded shadow mb-8">
-        <h2 className="font-semibold mb-4">
-          {editingRoom ? "Edit Room" : "Add Room"}
+      {/* ================= FORM CARD ================= */}
+      <div className="bg-white border rounded-2xl p-6 shadow-sm">
+        <h2 className="text-lg font-semibold mb-6">
+          {editingRoom ? "Edit Room" : "Add New Room"}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <Primaryinput
             placeholder="Room Number"
             value={form.roomNumber}
@@ -144,7 +146,7 @@ const ManagerRooms = () => {
           />
 
           <Primaryinput
-            placeholder="Type"
+            placeholder="Room Type"
             value={form.type}
             onChange={(e) => setForm({ ...form, type: e.target.value })}
           />
@@ -157,7 +159,7 @@ const ManagerRooms = () => {
           />
 
           <select
-            className="border rounded px-3 py-2"
+            className="border border-gray-300 rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-blue-500"
             value={form.status}
             onChange={(e) => setForm({ ...form, status: e.target.value })}
           >
@@ -172,27 +174,28 @@ const ManagerRooms = () => {
             type="file"
             accept="image/*"
             onChange={(e) => setImageFile(e.target.files[0])}
+            className="border border-gray-300 rounded-lg px-3 py-2.5"
           />
         </div>
 
-        <div className="mt-4 flex gap-3">
+        <div className="mt-6 flex gap-4">
           {editingRoom ? (
             <>
               <PrimaryButton
-                text="Update"
+                text="Update Room"
                 disabled={loading || editingRoom.status === "Booked"}
                 onClick={updateRoom}
               />
               <PrimaryButton
-                className="bg-gray-400"
                 text="Cancel"
+                className="bg-gray-400"
                 onClick={resetForm}
               />
             </>
           ) : (
             <PrimaryButton
-              className="bg-green-600"
               text="Add Room"
+              className="bg-green-600"
               disabled={loading}
               onClick={createRoom}
             />
@@ -200,35 +203,49 @@ const ManagerRooms = () => {
         </div>
       </div>
 
-      {/* ================= TABLE ================= */}
-      <div className="bg-white p-6 rounded shadow">
-        <table className="w-full">
-          <thead className="bg-slate-100">
+      {/* ================= ROOMS TABLE ================= */}
+      <div className="bg-white border rounded-2xl shadow-sm overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-slate-100 text-slate-700">
             <tr>
-              <th className="p-3">Room</th>
-              <th className="p-3">Type</th>
-              <th className="p-3">Price</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Image</th>
-              <th className="p-3">Action</th>
+              <th className="p-3 text-left">Room</th>
+              <th className="p-3 text-left">Type</th>
+              <th className="p-3 text-left">Price</th>
+              <th className="p-3 text-left">Status</th>
+              <th className="p-3 text-left">Image</th>
+              <th className="p-3 text-left">Action</th>
             </tr>
           </thead>
+
           <tbody>
             {rooms.map((r) => (
-              <tr key={r._id} className="border-t">
-                <td className="p-3">{r.roomNumber}</td>
+              <tr key={r._id} className="border-t hover:bg-slate-50 transition">
+                <td className="p-3 font-medium">{r.roomNumber}</td>
                 <td className="p-3">{r.type}</td>
                 <td className="p-3">₹{r.price}</td>
-                <td className="p-3 font-medium">{r.status}</td>
+
+                <td className="p-3">
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      r.status === "Booked"
+                        ? "bg-red-100 text-red-700"
+                        : "bg-green-100 text-green-700"
+                    }`}
+                  >
+                    {r.status}
+                  </span>
+                </td>
+
                 <td className="p-3">
                   {r.image && (
                     <img
                       src={`${BASE_URL}${r.image}`}
-                      className="h-12 w-20 object-cover"
+                      className="h-12 w-20 object-cover rounded-md"
                       alt="room"
                     />
                   )}
                 </td>
+
                 <td className="p-3 flex gap-2">
                   <PrimaryButton
                     text="Edit"
@@ -245,8 +262,8 @@ const ManagerRooms = () => {
                     }}
                   />
                   <PrimaryButton
-                    className="bg-red-600"
                     text="Delete"
+                    className="bg-red-600"
                     disabled={r.status === "Booked"}
                     onClick={() => deleteRoom(r)}
                   />
@@ -257,7 +274,7 @@ const ManagerRooms = () => {
         </table>
 
         {rooms.length === 0 && (
-          <p className="text-center text-slate-500 mt-4">No rooms found</p>
+          <p className="text-center text-slate-500 py-6">No rooms found</p>
         )}
       </div>
     </div>

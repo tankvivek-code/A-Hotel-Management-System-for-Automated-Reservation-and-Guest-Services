@@ -53,7 +53,7 @@ const CustomerPage = () => {
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {rooms.map((room) => {
-              const isBooked = room.status === "Booked";
+              const isBooked = room.status !== "Available";
 
               return (
                 <div
@@ -174,12 +174,12 @@ const CustomerPage = () => {
                 {/* 🔥 CONDITIONAL INPUTS */}
                 {form.paymentMethod === "UPI" && (
                   <input
-                    placeholder="Enter UPI ID"
+                    placeholder="Enter UPI ID (example@oksbi)"
                     className="w-full border p-2 mb-3"
                     onChange={(e) =>
                       setForm({
                         ...form,
-                        paymentDetails: { upiId: e.target.value },
+                        paymentDetails: { upiId: e.target.value.trim() },
                       })
                     }
                   />
@@ -209,7 +209,7 @@ const CustomerPage = () => {
                           ...form,
                           paymentDetails: {
                             ...form.paymentDetails,
-                            cardLast4: e.target.value,
+                            cardLast4: e.target.value.replace(/\D/g, ""),
                           },
                         })
                       }
@@ -238,20 +238,45 @@ const CustomerPage = () => {
                       return;
                     }
 
+                    // UPI validation
+                    if (form.paymentMethod === "UPI") {
+                      if (!form.paymentDetails.upiId) {
+                        alert("Enter UPI ID");
+                        return;
+                      }
+
+                      const upiRegex =
+                        /^[a-zA-Z0-9.\-_]{2,}@(oksbi|okaxis|okhdfcbank|okicici|ybl|ibl)$/;
+
+                      if (!upiRegex.test(form.paymentDetails.upiId)) {
+                        alert("Enter valid UPI ID (Example: name@oksbi)");
+                        return;
+                      }
+                    }
+
+                    // Card validation
+                    if (form.paymentMethod === "Card") {
+                      const cardRegex = /^\d{4}$/;
+
+                      if (!cardRegex.test(form.paymentDetails.cardLast4)) {
+                        alert("Card must contain exactly 4 digits");
+                        return;
+                      }
+                    }
+
                     await axios.post(
                       "http://localhost:5000/api/book-room",
                       {
                         roomId: selectedRoom._id,
                         ...form,
                         amount: selectedRoom.price,
+                        paymentStatus: "Paid", // 🔥 ALWAYS PAID
                       },
                       {
                         headers: {
-                          Authorization: `Bearer ${localStorage.getItem(
-                            "accessToken"
-                          )}`,
+                          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                         },
-                      }
+                      },
                     );
 
                     setSelectedRoom(null);
